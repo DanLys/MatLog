@@ -7,16 +7,16 @@ public class Fibonachi {
 
     public void main(String[] args) {
         int n = 30;
-        System.out.println(fibonacchiOptimisation(1, 5, 0.00001, n));
+        System.out.println(fibonacchiOptimisation(1, 5, n));
     }
 
     private double[] a, b, fibArr;
     private double x1, x2;
     private int k = 0, ind = 0;
-    private final double DOUBLE_EPSILON = 0.000000001;
+    private final double EPS = 1e-7;
 
     private boolean doubleEquals(double x1, double x2) {
-        return Math.abs(x2 - x1) < DOUBLE_EPSILON;
+        return Math.abs(x2 - x1) < EPS;
     }
 
     private double functionResult(double x) {
@@ -50,14 +50,14 @@ public class Fibonachi {
     }
 
 
-    public double fibonacchiOptimisation(double a1, double b1, double eps, int n) {    // main func
+    public double fibonacchiOptimisation(double a1, double b1, int n) {    // main func
         fillFibArr(n);
         a = new double[n + 1];  // fix ind
         b = new double[n + 1];
         a[0] = a1;
         b[0] = b1;
         double l1 = b1 - a1;
-        double l2 = fib(n - 1) / fib(n) * l1 + minusOnePower(n) * eps / fib(n);
+        double l2 = fib(n - 1) / fib(n) * l1 + minusOnePower(n) * EPS / fib(n);
         x2 = a1 + l2;
         stepOne(n);
         return (a[ind] + b[ind]) / 2;
