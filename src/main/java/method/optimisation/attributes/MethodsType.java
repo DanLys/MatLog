@@ -7,7 +7,8 @@ import method.optimisation.exceptions.method_types.ApiMethodTypeException;
  */
 public enum MethodsType {
     DICHOTOMY(0L, "Dichotomy"),
-    FIBONACHI(1L, "Fibonachi");
+    FIBONACHI(1L, "Fibonachi"),
+    PARABOLA(2L, "Parabola");
 
     MethodsType(Long id, String type) {
         this.id = id;

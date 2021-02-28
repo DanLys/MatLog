@@ -4,6 +4,7 @@ import lombok.Setter;
 import method.optimisation.attributes.MethodsType;
 import method.optimisation.data.dichotomy.DichotomyService;
 import method.optimisation.data.fibonacchi.FibonachiService;
+import method.optimisation.data.parabola.ParabolaService;
 import method.optimisation.exceptions.method_types.ApiMethodNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +22,14 @@ public class BaseService {
 
     private final DichotomyService dichotomyService;
     private final FibonachiService fibonachiService;
-
+    private final ParabolaService parabolaService;
 
     public BaseService(final DichotomyService dichotomyService,
-                       final FibonachiService fibonachiService) {
+                       final FibonachiService fibonachiService,
+                       final ParabolaService parabolaService) {
         this.fibonachiService = fibonachiService;
-        type = MethodsType.FIBONACHI;
+        this.parabolaService = parabolaService;
+        type = MethodsType.DICHOTOMY;
         this.dichotomyService = dichotomyService;
     }
 
@@ -34,6 +37,7 @@ public class BaseService {
         switch (type) {
             case DICHOTOMY: return dichotomyService.findResult();
             case FIBONACHI: return fibonachiService.findResult(a, b, iterator);
+            case PARABOLA: return parabolaService.findResult(a, b, iterator);
         }
 
         throw new ApiMethodNotFoundException(String.format("Method %s does not exist", type.getType()));

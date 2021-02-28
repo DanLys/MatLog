@@ -1,5 +1,8 @@
 package method.optimisation.data.parabola;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MethodParabola {
     public void main(String[] args) {
         System.out.println(launchParabolaMethod(4, 7));
