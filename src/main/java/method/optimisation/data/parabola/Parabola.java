@@ -2,8 +2,10 @@ package method.optimisation.data.parabola;
 
 public class Parabola {
     public void main(String[] args) {
-        System.out.println(launchParabolaMethod(4, 7, 0.0001));
+        System.out.println(launchParabolaMethod(4, 7));
     }
+
+    private final Double EPS = 1e-7;
 
     private static class TripleF {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
@@ -24,17 +26,17 @@ public class Parabola {
         return Math.sin(x) + 1 / x; // 4.7566019161693704
     }
 
-    public double launchParabolaMethod(double a, double b, double eps) {
-        return parabolaMethod(new TripleX(a, chooseX2(a, b), b), eps);
+    public double launchParabolaMethod(double a, double b) {
+        return parabolaMethod(new TripleX(a, chooseX2(a, b), b));
     }
 
-    private double parabolaMethod(TripleX tripleX, double eps) {  // main parabola
+    private double parabolaMethod(TripleX tripleX) {  // main parabola
         double prevXmin = stepOne(tripleX);
         TripleX tripleX1 = stepThree(tripleX, prevXmin);
         double xMin;
         while (true) {
             xMin = stepOne(tripleX1);
-            if (stepTwo(prevXmin, xMin, eps)) {
+            if (stepTwo(prevXmin, xMin, EPS)) {
                 break;
             }
             prevXmin = xMin;
