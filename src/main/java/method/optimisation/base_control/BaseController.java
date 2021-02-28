@@ -22,9 +22,11 @@ public class BaseController {
         this.baseService = baseService;
     }
 
-    @RequestMapping(value = "api/dichotomy/get/result", method = RequestMethod.GET)
-    public ResponseEntity<String> getAnswer() {
-        return ResponseEntity.ok(String.valueOf(baseService.solve()));
+    @RequestMapping(value = "api/get/result/{a}/{b}/{iterator}", method = RequestMethod.GET)
+    public ResponseEntity<String> getAnswer(@PathVariable("a") final Double a,
+                                            @PathVariable("b") final Double b,
+                                            @PathVariable("iterator") final Integer iterator) {
+        return ResponseEntity.ok(String.valueOf(baseService.solve(a, b, iterator)));
     }
 
     @RequestMapping(value = "api/change/method/{method}", method = RequestMethod.POST)

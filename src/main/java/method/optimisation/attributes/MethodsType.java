@@ -6,7 +6,8 @@ import method.optimisation.exceptions.method_types.ApiMethodTypeException;
  * Created by Danil Lyskin at 16:04 25.02.2021
  */
 public enum MethodsType {
-    DICHOTOMY(0L, "Dichotomy");
+    DICHOTOMY(0L, "Dichotomy"),
+    FIBONACHI(1L, "Fibonachi");
 
     MethodsType(Long id, String type) {
         this.id = id;

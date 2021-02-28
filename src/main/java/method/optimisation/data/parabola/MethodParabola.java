@@ -1,6 +1,6 @@
 package method.optimisation.data.parabola;
 
-public class Parabola {
+public class MethodParabola {
     public void main(String[] args) {
         System.out.println(launchParabolaMethod(4, 7));
     }
@@ -22,8 +22,8 @@ public class Parabola {
     }
 
     private double functionResult(double x) {
-//        return 0.2 * x * Math.log(x) + Math.pow((x - 2.3), 2);
-        return Math.sin(x) + 1 / x; // 4.7566019161693704
+        return 0.2 * x * Math.log(x) + Math.pow((x - 2.3), 2);
+//        return Math.sin(x) + 1 / x; // 4.7566019161693704
     }
 
     public double launchParabolaMethod(double a, double b) {
