@@ -1,5 +1,7 @@
+package method.optimisation.data.parabola;
+
 public class Parabola {
-    public static void main(String[] args) {
+    public void main(String[] args) {
         System.out.println(launchParabolaMethod(4, 7, 0.0001));
     }
 
@@ -7,7 +9,7 @@ public class Parabola {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
     }
 
-    private static class TripleX {
+    private class TripleX {
         public double x1, x2, x3;
 
         private TripleX(double x1, double x2, double x3) {
@@ -17,16 +19,16 @@ public class Parabola {
         }
     }
 
-    private static double functionResult(double x) {
+    private double functionResult(double x) {
 //        return 0.2 * x * Math.log(x) + Math.pow((x - 2.3), 2);
         return Math.sin(x) + 1 / x; // 4.7566019161693704
     }
 
-    public static double launchParabolaMethod(double a, double b, double eps) {
+    public double launchParabolaMethod(double a, double b, double eps) {
         return parabolaMethod(new TripleX(a, chooseX2(a, b), b), eps);
     }
 
-    private static double parabolaMethod(TripleX tripleX, double eps) {  // main parabola
+    private double parabolaMethod(TripleX tripleX, double eps) {  // main parabola
         double prevXmin = stepOne(tripleX);
         TripleX tripleX1 = stepThree(tripleX, prevXmin);
         double xMin;
@@ -36,12 +38,12 @@ public class Parabola {
                 break;
             }
             prevXmin = xMin;
-            tripleX1 = stepThree(tripleX1, xMin);
+            stepThree(tripleX1, xMin);
         }
         return xMin;
     }
 
-    private static double chooseX2(double a, double b) {  // методом золотого сечения
+    private double chooseX2(double a, double b) {  // методом золотого сечения
         double x21 = a + (3 - Math.sqrt(5)) / 2 * (b - a),
                 x22 = a + (Math.sqrt(5) - 1) / 2 * (b - a),
                 fB = functionResult(b),
@@ -52,22 +54,21 @@ public class Parabola {
         return chooseX2(x22, b);
     }
 
-    private static double stepOne(TripleX tripleX) {
+    private double stepOne(TripleX tripleX) {
         TripleF.fX1 = functionResult(tripleX.x1);
         TripleF.fX2 = functionResult(tripleX.x2);
         TripleF.fX3 = functionResult(tripleX.x3);
         double a1 = (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1),
                 a2 = 1 / (tripleX.x3 - tripleX.x2) * ((TripleF.fX3 - TripleF.fX1) / (tripleX.x3 - tripleX.x1)
-                 - (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1)),
-                xMin = 0.5 * (tripleX.x1 + tripleX.x2 - a1 / a2);
-        return xMin;
+                 - (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1));
+        return 0.5 * (tripleX.x1 + tripleX.x2 - a1 / a2);
     }
 
-    private static boolean stepTwo(double prevMin, double xMin, double eps) {
+    private boolean stepTwo(double prevMin, double xMin, double eps) {
         return Math.abs(prevMin - xMin) <= eps;
     }
 
-    private static TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
+    private TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
         double fXmin = functionResult(xMin);
         if (tripleX.x1 < xMin
                 && xMin < tripleX.x2

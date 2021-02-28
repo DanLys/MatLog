@@ -1,25 +1,30 @@
+package method.optimisation.data.fibonacchi;
+
+import org.springframework.stereotype.Component;
+
+@Component
 public class Fibonachi {
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         int n = 30;
         System.out.println(fibonacchiOptimisation(1, 5, 0.00001, n));
     }
 
-    private static double[] a, b, fibArr;
-    private static double x1, x2;
-    private static int k = 0, ind = 0;
-    private static final double DOUBLE_EPSILON = 0.000000001;
+    private double[] a, b, fibArr;
+    private double x1, x2;
+    private int k = 0, ind = 0;
+    private final double DOUBLE_EPSILON = 0.000000001;
 
-    private static boolean doubleEquals(double x1, double x2) {
+    private boolean doubleEquals(double x1, double x2) {
         return Math.abs(x2 - x1) < DOUBLE_EPSILON;
     }
 
-    private static double functionResult(double x) {
+    private double functionResult(double x) {
 //        return Math.exp(x) - 2 * Math.pow(x, 2);
         return Math.sin(x) + 1 / x;
     }
 
-    private static void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
+    private void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
         fibArr = new double[n];
         fibArr[0] = 1;
         fibArr[1] = 1;
@@ -32,11 +37,11 @@ public class Fibonachi {
         }
     }
 
-    private static double fib(final int n) {        // get value fib
+    private double fib(final int n) {        // get value fib
         return fibArr[n - 1];
     }
 
-    private static int minusOnePower(int power) {
+    private int minusOnePower(int power) {
         if (power % 2 == 0) {
             return 1;
         } else {
@@ -45,7 +50,7 @@ public class Fibonachi {
     }
 
 
-    public static double fibonacchiOptimisation(double a1, double b1, double eps, int n) {    // main func
+    public double fibonacchiOptimisation(double a1, double b1, double eps, int n) {    // main func
         fillFibArr(n);
         a = new double[n + 1];  // fix ind
         b = new double[n + 1];
@@ -58,7 +63,7 @@ public class Fibonachi {
         return (a[ind] + b[ind]) / 2;
     }
 
-    private static void stepOne(int n) {    // step 4
+    private void stepOne(int n) {    // step 4
         x1 = a[ind] + (b[ind] - x2);
         double fX1 = functionResult(x1),
                 fX2 = functionResult(x2);
@@ -84,7 +89,7 @@ public class Fibonachi {
         stepTwo(n);
     }
 
-    private static void stepTwo(int n) {
+    private void stepTwo(int n) {
        k++;
        if (k < n) {
            stepOne(n);
