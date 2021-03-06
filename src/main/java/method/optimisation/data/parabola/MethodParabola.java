@@ -3,12 +3,12 @@ package method.optimisation.data.parabola;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MethodParabola {
+public class MethodParabola extends method.optimisation.data.AbstractComparator {
     public void main(String[] args) {
         System.out.println(launchParabolaMethod(4, 7));
     }
 
-    private final Double EPS = 1e-7;
+//    private final Double EPS = 1e-7;
 
     private static class TripleF {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
@@ -39,7 +39,7 @@ public class MethodParabola {
         double xMin;
         while (true) {
             xMin = stepOne(tripleX1);
-            if (stepTwo(prevXmin, xMin, EPS)) {
+            if (stepTwo(prevXmin, xMin)) {
                 break;
             }
             prevXmin = xMin;
@@ -54,8 +54,10 @@ public class MethodParabola {
                 fB = functionResult(b),
                 fX21 = functionResult(x21),
                 fX22 = functionResult(x22);
-        if (fX21 <= fB) return x21;
-        if (fX22 <= fB) return x22;
+//        if (fX21 <= fB) return x21;
+//        if (fX22 <= fB) return x22;
+        if (isLessOrEqual(fX21, fB)) return x21;
+        if (isLessOrEqual(fX22, fB)) return x22;
         return chooseX2(x22, b);
     }
 
@@ -69,16 +71,16 @@ public class MethodParabola {
         return 0.5 * (tripleX.x1 + tripleX.x2 - a1 / a2);
     }
 
-    private boolean stepTwo(double prevMin, double xMin, double eps) {
-        return Math.abs(prevMin - xMin) <= eps;
+    private boolean stepTwo(double prevMin, double xMin) {
+        return Math.abs(prevMin - xMin) <= EPS;
     }
 
     private TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
         double fXmin = functionResult(xMin);
-        if (tripleX.x1 < xMin
-                && xMin < tripleX.x2
-                && tripleX.x2 < tripleX.x3) {
-            if (fXmin >= TripleF.fX2) {
+        if (isLess(tripleX.x1, xMin)
+                && isLess(xMin, tripleX.x2)
+                && isLess(tripleX.x2, tripleX.x3)) {
+            if (isBiggerOrEqual(fXmin, TripleF.fX2)) {
                 tripleX.x1 = xMin;
                 TripleF.fX1 = fXmin;
             } else {
@@ -89,10 +91,10 @@ public class MethodParabola {
             }
         }
 
-        if (tripleX.x1 < tripleX.x2
-                && tripleX.x2 < xMin
-                && xMin < tripleX.x3) {
-            if (TripleF.fX2 >= fXmin) {
+        if (isLess(tripleX.x1, tripleX.x2)
+                && isLess(tripleX.x2, xMin)
+                && isLess(xMin, tripleX.x3)) {
+            if (isBiggerOrEqual(TripleF.fX2, fXmin)) {
                 tripleX.x1 = tripleX.x2;
                 TripleF.fX1 = TripleF.fX2;
                 tripleX.x2 = xMin;
