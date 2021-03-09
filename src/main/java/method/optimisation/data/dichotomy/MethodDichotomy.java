@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MethodDichotomy extends AbstractComparator {
 
-    private final double EPS = 1e-7;
-
     private double func(double x) {
         return 0.2 * x * Math.log(x) + Math.pow(x - 2.3, 2);
     }
