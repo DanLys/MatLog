@@ -68,7 +68,6 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
                 b[ind] = b[ind - 1];
             }
             x2 = x1;
-            fX2 = fX1;
         } else {
             if (isLess(x1, x2)) {
                 a[++ind] = x1;
