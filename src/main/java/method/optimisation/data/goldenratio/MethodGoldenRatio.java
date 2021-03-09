@@ -8,7 +8,7 @@ public class MethodGoldenRatio {
     }
 
     // Return x : f(x) = min
-    private static double goldenRatio(double a, double b) {
+    private static double goldenRatio(double a, double b, int iterations) {
         // Step 1
         double x1 = a + (3 - Math.sqrt(5)) / 2 * (b - a);
         double x2 = a + (Math.sqrt(5) - 1) / 2 * (b - a);
@@ -39,6 +39,6 @@ public class MethodGoldenRatio {
     }
 
     public static void main(String[] args) {
-        System.out.print(f(goldenRatio(0.5, 2.5)));
+        System.out.print(f(goldenRatio(0.5, 2.5, 100)));
     }
 }

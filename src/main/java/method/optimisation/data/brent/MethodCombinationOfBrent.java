@@ -8,7 +8,7 @@ public class MethodCombinationOfBrent {
     }
 
     // Return x : f(x) = min
-    private static double combinationOfBrent(double l, double r) {
+    private static double combinationOfBrent(double l, double r, int iterations) {
         // Step 1
         final double t = (3 - Math.sqrt(5)) / 2;
         double a = l, c = r;
@@ -88,6 +88,6 @@ public class MethodCombinationOfBrent {
     }
 
     public static void main(String[] args) {
-        System.out.print(f(combinationOfBrent(0.5, 2.5)));
+        System.out.print(f(combinationOfBrent(0.5, 2.5, 100)));
     }
 }
