@@ -1,14 +1,17 @@
 package method.optimisation.data.brent;
 
-public class MethodCombinationOfBrent {
-    private final static double EPSILON = 1E-9;
+import org.springframework.stereotype.Component;
 
-    private static double f(double x) {
+@Component
+public class MethodCombinationOfBrent {
+    private final double EPSILON = 1E-9;
+
+    private double f(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     // Return x : f(x) = min
-    private static double combinationOfBrent(double l, double r, int iterations) {
+    public double combinationOfBrent(double l, double r, int iterations) {
         // Step 1
         final double t = (3 - Math.sqrt(5)) / 2;
         double a = l, c = r;
@@ -85,9 +88,5 @@ public class MethodCombinationOfBrent {
         }
         // Step 6
         return x;
-    }
-
-    public static void main(String[] args) {
-        System.out.print(f(combinationOfBrent(0.5, 2.5, 100)));
     }
 }
