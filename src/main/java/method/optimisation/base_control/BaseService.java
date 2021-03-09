@@ -35,7 +35,7 @@ public class BaseService {
 
     public Double solve(double a, double b, int iterator) {
         switch (type) {
-            case DICHOTOMY: return dichotomyService.findResult();
+            case DICHOTOMY: return dichotomyService.findResult(a, b, iterator);
             case FIBONACHI: return fibonachiService.findResult(a, b, iterator);
             case PARABOLA: return parabolaService.findResult(a, b, iterator);
         }

@@ -14,4 +14,7 @@ public abstract class AbstractComparator {        // need tests
     public boolean isBiggerOrEqual(double x, double y) {
         return x - y >= EPS;
     }
+    public boolean isEqual(double x, double y) {
+        return Math.abs(x - y) <= EPS;
+    }
 }

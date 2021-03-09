@@ -17,7 +17,7 @@ public class DichotomyService {
         this.methodDichotomy = methodDichotomy;
     }
 
-    public Double findResult() {
-        return methodDichotomy.solve();
+    public Double findResult(double a, double b, int iterations) {
+        return methodDichotomy.solve(a, b, iterations);
     }
 }
