@@ -25,7 +25,7 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
     }
 
     private double functionResult(double x) {
-        return 0.2 * x * Math.log(x) + Math.pow((x - 2.3), 2);
+        return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
 //        return Math.sin(x) + 1 / x; // 4.7566019161693704
     }
 

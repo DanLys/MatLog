@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class MethodDichotomy extends AbstractComparator {
 
     private double func(double x) {
-        return 0.2 * x * Math.log(x) + Math.pow(x - 2.3, 2);
+        return 0.2 * x * Math.log10(x) + Math.pow(x - 2.3, 2);
     }
 
     /**

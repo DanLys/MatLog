@@ -12,7 +12,7 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
 
     private double functionResult(double x) {
 //        return Math.exp(x) - 2 * Math.pow(x, 2);
-        return 0.2 * x * Math.log(x) + Math.pow((x - 2.3), 2);
+        return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     private void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
