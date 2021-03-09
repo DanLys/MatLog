@@ -16,7 +16,7 @@ public class MethodDichotomy extends AbstractComparator {
 
     /**
      * calculate the result for 0.2𝑥𝑙𝑔(𝑥) + (𝑥 − 2.3)^2
-     * @return 1 if result > 0, 0 if result - 0 < eps, -1 if result < 0 {@link Integer}
+     * @return 1 if result > 0, 0 if |result - 0| < eps, -1 if result < 0 {@link Integer}
      */
     private Integer check(double x1, double x2) {
         double res1 = func(x1);
