@@ -8,10 +8,8 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
     private double[] a, b, fibArr;
     private double x1, x2;
     private int k = 0, ind = 0;
-    private final double EPS = 1e-7;
 
     private double functionResult(double x) {
-//        return Math.exp(x) - 2 * Math.pow(x, 2);
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
@@ -81,10 +79,12 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
     }
 
     private void stepTwo(int n) {
-       k++;
-       if (k < n) {
-           stepOne(n);
-       } // else finish
+        k++;
+        if (k < n) {
+            stepOne(n);
+        } // else finish
     }
 }
+
+
 

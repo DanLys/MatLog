@@ -29,7 +29,7 @@ public class BaseController {
     @RequestMapping(value = "api/change/method/{method}", method = RequestMethod.POST)
     public ResponseEntity<String> changeMethod(@PathVariable("method") final String method) {
         baseService.setType(MethodsType.of(method));
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok(method);
     }
 
 }
