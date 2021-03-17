@@ -32,6 +32,9 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
     }
 
     private double parabolaMethod(TripleX tripleX) {  // main parabola
+        TripleF.fX1 = functionResult(tripleX.x1);
+        TripleF.fX2 = functionResult(tripleX.x2);
+        TripleF.fX3 = functionResult(tripleX.x3);
         double prevXmin = stepOne(tripleX);
         TripleX tripleX1 = stepThree(tripleX, prevXmin);
         double xMin = 0d, temp;
@@ -62,9 +65,6 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
     }
 
     private double stepOne(TripleX tripleX) {
-        TripleF.fX1 = functionResult(tripleX.x1);
-        TripleF.fX2 = functionResult(tripleX.x2);
-        TripleF.fX3 = functionResult(tripleX.x3);
         if (tripleX.x1 == tripleX.x2 || tripleX.x1 == tripleX.x3 || tripleX.x2 == tripleX.x3) {
             return Double.MIN_VALUE;
         }

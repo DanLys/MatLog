@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class MethodFibonachi extends method.optimisation.data.AbstractComparator {
 
     private double[] a, b, fibArr;
-    private double x1, x2;
+    private double x1, x2, fX1, fX2;
     private int k = 0, ind = 0;
 
     private double functionResult(double x) {
@@ -49,14 +49,14 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
         double l1 = b1 - a1;
         double l2 = fib(n - 1) / fib(n) * l1 + minusOnePower(n) * EPS / fib(n);
         x2 = a1 + l2;
+        fX2 = functionResult(x2);
         stepOne(n);
         return (a[ind] + b[ind]) / 2;
     }
 
     private void stepOne(int n) { // step 4
         x1 = a[ind] + (b[ind] - x2);
-        double fX1 = functionResult(x1),
-                fX2 = functionResult(x2);
+        double fX1 = functionResult(x1);
         if (isLess(fX1, fX2)) {
             if (isLess(x1, x2)) {
                 b[++ind] = x2;
@@ -66,6 +66,7 @@ public class MethodFibonachi extends method.optimisation.data.AbstractComparator
                 b[ind] = b[ind - 1];
             }
             x2 = x1;
+            fX2 = fX1;
         } else {
             if (isLess(x1, x2)) {
                 a[++ind] = x1;
