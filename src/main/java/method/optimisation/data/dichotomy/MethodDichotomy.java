@@ -22,10 +22,8 @@ public class MethodDichotomy extends AbstractComparator {
         double res1 = func(x1);
         double res2 = func(x2);
 
-        if (isBigger(res2, res1)) {
+        if (res2 > res1) {
             return 1;
-        } else if (isEqual(res1, res2)) {
-            return 0;
         }
         return -1;
     }
@@ -37,13 +35,13 @@ public class MethodDichotomy extends AbstractComparator {
     public double solve(double a, double b, int iterations) {
         double le = a;
         double ri = b;
-        double del = 1e-4;
+        double del = 1e-7;
 
-        while (iterations > 0) {
-            double x1 = (le + ri) / 2 - del;
-            double x2 = (le + ri) / 2 + del;
+        while ((ri - le) / 2 > EPS) {
+            double x1 = (le + ri - del) / 2;
+            double x2 = (le + ri + del) / 2;
 
-            if (check(x1, x2) > 0) {
+            if (check(x1, x2) == 1) {
                 ri = x2;
             } else {
                 le = x1;
