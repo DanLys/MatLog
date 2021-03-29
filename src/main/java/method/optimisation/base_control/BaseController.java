@@ -3,10 +3,7 @@ package method.optimisation.base_control;
 import method.optimisation.attributes.MethodsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Danil Lyskin at 15:02 25.02.2021
@@ -32,7 +29,7 @@ public class BaseController {
     @RequestMapping(value = "api/change/method/{method}", method = RequestMethod.POST)
     public ResponseEntity<String> changeMethod(@PathVariable("method") final String method) {
         baseService.setType(MethodsType.of(method));
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok(method);
     }
 
 }

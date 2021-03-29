@@ -4,11 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MethodParabola extends method.optimisation.data.AbstractComparator {
-    public void main(String[] args) {
-        System.out.println(launchParabolaMethod(4, 7));
-    }
 
-//    private final Double EPS = 1e-7;
+    public void main(String[] args) {
+        System.out.println(launchParabolaMethod(0.5, 2.5));
+    }
 
     private static class TripleF {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
@@ -26,7 +25,6 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
 
     private double functionResult(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
-//        return Math.sin(x) + 1 / x; // 4.7566019161693704
     }
 
     public double launchParabolaMethod(double a, double b) {
@@ -34,16 +32,23 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
     }
 
     private double parabolaMethod(TripleX tripleX) {  // main parabola
+        TripleF.fX1 = functionResult(tripleX.x1);
+        TripleF.fX2 = functionResult(tripleX.x2);
+        TripleF.fX3 = functionResult(tripleX.x3);
         double prevXmin = stepOne(tripleX);
         TripleX tripleX1 = stepThree(tripleX, prevXmin);
-        double xMin;
+        double xMin = 0d, temp;
         while (true) {
-            xMin = stepOne(tripleX1);
+            temp = stepOne(tripleX1);
+            if (temp == Double.MIN_VALUE) {
+                break;
+            }
+            xMin = temp;
             if (stepTwo(prevXmin, xMin)) {
                 break;
             }
             prevXmin = xMin;
-            stepThree(tripleX1, xMin);
+            tripleX1 = stepThree(tripleX1, xMin);
         }
         return xMin;
     }
@@ -54,20 +59,18 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
                 fB = functionResult(b),
                 fX21 = functionResult(x21),
                 fX22 = functionResult(x22);
-//        if (fX21 <= fB) return x21;
-//        if (fX22 <= fB) return x22;
         if (isLessOrEqual(fX21, fB)) return x21;
         if (isLessOrEqual(fX22, fB)) return x22;
         return chooseX2(x22, b);
     }
 
     private double stepOne(TripleX tripleX) {
-        TripleF.fX1 = functionResult(tripleX.x1);
-        TripleF.fX2 = functionResult(tripleX.x2);
-        TripleF.fX3 = functionResult(tripleX.x3);
+        if (tripleX.x1 == tripleX.x2 || tripleX.x1 == tripleX.x3 || tripleX.x2 == tripleX.x3) {
+            return Double.MIN_VALUE;
+        }
         double a1 = (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1),
                 a2 = 1 / (tripleX.x3 - tripleX.x2) * ((TripleF.fX3 - TripleF.fX1) / (tripleX.x3 - tripleX.x1)
-                 - (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1));
+                        - (TripleF.fX2 - TripleF.fX1) / (tripleX.x2 - tripleX.x1));
         return 0.5 * (tripleX.x1 + tripleX.x2 - a1 / a2);
     }
 
@@ -107,5 +110,8 @@ public class MethodParabola extends method.optimisation.data.AbstractComparator 
         return tripleX;
     }
 }
+
+
+
 
 
