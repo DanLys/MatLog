@@ -1,17 +1,12 @@
-package method.optimisation.data.goldenratio;
-
-import org.springframework.stereotype.Component;
-
-@Component
 public class MethodGoldenRatio {
-    private final double EPSILON = 1E-9;
+    private final static double EPSILON = 1E-9;
 
     private double f(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     // Return x : f(x) = min
-    public double goldenRatio(double a, double b, int iterations) {
+    private double goldenRatio(double a, double b) {
         // Step 1
         double x1 = a + (3 - Math.sqrt(5)) / 2 * (b - a);
         double x2 = a + (Math.sqrt(5) - 1) / 2 * (b - a);
@@ -19,6 +14,7 @@ public class MethodGoldenRatio {
         double f2 = f(x2);
         final double t = (Math.sqrt(5) - 1) / 2;
         double eps = (b - a) / 2;
+        int i = 0;
         // Step 2
         while (eps >= EPSILON) {
             // Step 3
@@ -36,6 +32,7 @@ public class MethodGoldenRatio {
                 f2 = f(x2);
             }
             eps *= t;
+            i++;
         }
         // Step 4
         return (a + b) / 2;

@@ -1,25 +1,20 @@
-package method.optimisation.data.brent;
-
-import org.springframework.stereotype.Component;
-
-@Component
 public class MethodCombinationOfBrent {
-    private final double EPSILON = 1E-9;
+    private final static double EPSILON = 1E-9;
 
     private double f(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     // Return x : f(x) = min
-    public double combinationOfBrent(double l, double r, int iterations) {
+    private double combinationOfBrent(double a, double b) {
         // Step 1
         final double t = (3 - Math.sqrt(5)) / 2;
-        double a = l, c = r;
-        double x = a + t * (c - a), w = x, v = x;
+        double x = a + t * (b - a), w = x, v = x;
         double fX = f(x), fW = fX, fV = fX;
-        double d = c - a, e = d;
+        double d = b - a, e = d;
         double u = 0, fU;
         boolean parabolaU;
+        int i = 0;
         // Step 2
         while (d > EPSILON) {
             // Step 3
@@ -27,15 +22,15 @@ public class MethodCombinationOfBrent {
             double g = e;
             e = d;
             double tol = EPSILON * Math.abs(x) + EPSILON / 10;
-            if (Math.abs(x - (a + c) / 2) + (c - a) / 2 - 2 * tol <= EPSILON) {
+            if (Math.abs(x - (a + b) / 2) + (b - a) / 2 - 2 * tol <= EPSILON) {
                 break;
             }
             if (!(x == w || x == v || w == v || fX == fW || fX == fV || fV == fW)) {
                 u = (x + w - (fW - fX) / (w - x) / ((fV - fX) / (v - x) - (fW - fX) / (w - x)) / (v - w)) / 2;
-                if (u - a >= 0 && c - u >= 0 && Math.abs(u - x) - g / 2 < 0) {
+                if (u - a >= 0 && b - u >= 0 && Math.abs(u - x) - g / 2 < 0) {
                     parabolaU = true;
-                    if (u - a - 2 * tol < EPSILON || c - u - 2 * tol < EPSILON) {
-                        u = x - Math.signum(x - (a + c) / 2) * tol;
+                    if (u - a - 2 * tol < EPSILON || b - u - 2 * tol < EPSILON) {
+                        u = x - Math.signum(x - (a + b) / 2) * tol;
                     }
                 } else {
                     parabolaU = false;
@@ -43,9 +38,9 @@ public class MethodCombinationOfBrent {
             }
             // Step 4
             if (!parabolaU) {
-                if (x - (a + c) / 2 < EPSILON) {
-                    u = x + t * (c - x);
-                    e = c - x;
+                if (x - (a + b) / 2 < EPSILON) {
+                    u = x + t * (b - x);
+                    e = b - x;
                 } else {
                     u = x - t * (x - a);
                     e = x - a;
@@ -61,7 +56,7 @@ public class MethodCombinationOfBrent {
                 if (u - x >= EPSILON) {
                     a = x;
                 } else {
-                    c = x;
+                    b = x;
                 }
                 v = w;
                 w = x;
@@ -71,7 +66,7 @@ public class MethodCombinationOfBrent {
                 fX = fU;
             } else {
                 if (u - x >= EPSILON) {
-                    c = u;
+                    b = u;
                 } else {
                     a = u;
                 }
@@ -85,6 +80,7 @@ public class MethodCombinationOfBrent {
                     fV = fU;
                 }
             }
+            i++;
         }
         // Step 6
         return x;
