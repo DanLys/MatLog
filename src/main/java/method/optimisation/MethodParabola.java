@@ -1,8 +1,5 @@
 package method.optimisation;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class MethodParabola extends AbstractComparator {
 
     public void main(String[] args) {
