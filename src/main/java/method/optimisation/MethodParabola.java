@@ -3,7 +3,7 @@ package method.optimisation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MethodParabola extends method.optimisation.data.AbstractComparator {
+public class MethodParabola extends AbstractComparator {
 
     public void main(String[] args) {
         System.out.println(launchParabolaMethod(0.5, 2.5));
