@@ -1,3 +1,5 @@
+package method.optimisation;
+
 public class MethodGoldenRatio {
     private final static double EPSILON = 1E-9;
 

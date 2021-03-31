@@ -1,6 +1,6 @@
-package method.optimisation.data.fibonacchi;
+package method.optimisation;
 
-public class MethodFibonachi extends method.optimisation.data.AbstractComparator {
+public class MethodFibonachi extends AbstractComparator {
 
     private double[] a, b, fibArr;
     private double x1, x2, fX1, fX2;

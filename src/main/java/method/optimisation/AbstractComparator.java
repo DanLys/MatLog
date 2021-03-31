@@ -1,4 +1,4 @@
-package method.optimisation.data;
+package method.optimisation;
 public abstract class AbstractComparator {        // need tests
     protected final Double EPS = 1e-7;
     // x < y <=> x - y < 0 <=> x - y < eps

@@ -1,13 +1,9 @@
-package method.optimisation.data.dichotomy;
-
-import method.optimisation.data.AbstractComparator;
-import org.springframework.stereotype.Component;
+package method.optimisation;
 
 /**
  * Created by Danil Lyskin at 15:12 25.02.2021
  */
 
-@Component
 public class MethodDichotomy extends AbstractComparator {
 
     private double func(double x) {
