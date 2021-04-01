@@ -78,6 +78,7 @@ class DrawFrame extends JFrame implements ActionListener {
                     pair = MethodGoldenRatio.goldenRatio(0.5, 2.5, value);
                     break;
                 case BRENT:
+                    triple = MethodCombinationOfBrent.combinationOfBrent(0,2.5, value);
             }
             panel.updateUI();
         });
@@ -167,38 +168,46 @@ class DrawPanel extends JPanel {
                     drawPoint();
                     break;
                 case PARABOLA:
-
-                    double x1 = triple.getFirst();
-                    double x2 = triple.getSecond().getFirst();
-                    double x3 = triple.getSecond().getSecond();
-
-                    double y1 = f(x1);
-                    double y2 = f(x2);
-                    double y3 = f(x3);
-
-                    double a = (y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) / (x3 * (x3 - x1 - x2) + x1 * x2);
-                    double b = (y2 - y1) / (x2 - x1) - a * (x1 + x2);
-                    double c = (x2 * y1 - x1 * y2) / (x2 - x1) + a * x1 * x2;
-
-                    lastY = 0;
-                    for (double x = x2 - 1.5; x <= x2 + 1.5; x += 0.1) {
-                        double res = a * x * x + b * x + c;
-
-                        if (lastY == 0) {
-                            lastY = res;
-                            continue;
-                        }
-                        g2.draw(new Line2D.Double(
-                                mX * (x - 0.1) + DEL,
-                                DEFAULT_HEIGHT / 2 - mY * lastY,
-                                mX * x + DEL,
-                                DEFAULT_HEIGHT / 2 - mY * res));
-                        lastY = res;
-                    }
-
+                    drawParabola();
                     break;
                 case BRENT:
+                    if (triple.getFirst() != null) {
+                        drawParabola();
+                    } else {
+                        pair = triple.getSecond();
+                        drawPoint();
+                    }
             }
+        }
+    }
+
+    private void drawParabola() {
+        double x1 = triple.getFirst();
+        double x2 = triple.getSecond().getFirst();
+        double x3 = triple.getSecond().getSecond();
+
+        double y1 = f(x1);
+        double y2 = f(x2);
+        double y3 = f(x3);
+
+        double a = (y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) / (x3 * (x3 - x1 - x2) + x1 * x2);
+        double b = (y2 - y1) / (x2 - x1) - a * (x1 + x2);
+        double c = (x2 * y1 - x1 * y2) / (x2 - x1) + a * x1 * x2;
+
+        double lastY = 0;
+        for (double x = x2 - 1.5; x <= x2 + 1.5; x += 0.1) {
+            double res = a * x * x + b * x + c;
+
+            if (lastY == 0) {
+                lastY = res;
+                continue;
+            }
+            g2.draw(new Line2D.Double(
+                    mX * (x - 0.1) + DEL,
+                    DEFAULT_HEIGHT / 2 - mY * lastY,
+                    mX * x + DEL,
+                    DEFAULT_HEIGHT / 2 - mY * res));
+            lastY = res;
         }
     }
 
