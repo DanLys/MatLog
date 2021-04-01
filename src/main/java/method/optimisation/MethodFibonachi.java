@@ -1,6 +1,5 @@
 package method.optimisation;
 
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -52,7 +51,7 @@ public class MethodFibonachi extends AbstractComparator {
         x2 = a1 + l2;
         fX2 = functionResult(x2);
         stepOne(n);
-        return Pair.of(a[ind], b[ind]);
+        return new Pair<>(a[ind], b[ind]);
     }
 
     private static void stepOne(int n) { // step 4

@@ -1,7 +1,5 @@
 package method.optimisation;
 
-import org.springframework.data.util.Pair;
-
 /**
  * Created by Danil Lyskin at 15:12 25.02.2021
  */
@@ -47,6 +45,6 @@ public class MethodDichotomy extends AbstractComparator {
             iterations--;
         }
 
-        return Pair.of(le, ri);
+        return new method.optimisation.Pair<Double, Double>(le, ri);
     }
 }

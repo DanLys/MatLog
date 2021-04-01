@@ -1,7 +1,5 @@
 package method.optimisation;
 
-import org.springframework.data.util.Pair;
-
 public class MethodCombinationOfBrent {
     private final static double EPSILON = 1E-9;
 
@@ -18,7 +16,7 @@ public class MethodCombinationOfBrent {
         double d = b - a, e = d;
         double u = 0, fU;
         boolean parabolaU = false;
-        Pair<Double, Pair<Double, Double>> ans = Pair.of(null, Pair.of(a, b));
+        Pair<Double, Pair<Double, Double>> ans = new Pair<>(null, new Pair<>(a, b));
         // Step 2
         while (iterations > 0) {
             // Step 3
@@ -33,7 +31,7 @@ public class MethodCombinationOfBrent {
                 u = (x + w - (fW - fX) / (w - x) / ((fV - fX) / (v - x) - (fW - fX) / (w - x)) / (v - w)) / 2;
                 if (u - a >= 0 && b - u >= 0 && Math.abs(u - x) - g / 2 < 0) {
                     parabolaU = true;
-                    ans = Pair.of(x, Pair.of(w, v));
+                    ans = new Pair<>(x, new Pair<>(w, v));
                     if (u - a - 2 * tol < EPSILON || b - u - 2 * tol < EPSILON) {
                         u = x - Math.signum(x - (a + b) / 2) * tol;
                     }
@@ -50,7 +48,7 @@ public class MethodCombinationOfBrent {
                     u = x - t * (x - a);
                     e = x - a;
                 }
-                ans = Pair.of(null, Pair.of(u, e));
+                ans = new Pair<>(null, new Pair<>(u, e));
             }
             if (Math.abs(u - x) - tol < EPSILON) {
                 u = x + Math.signum(u - x) * tol;

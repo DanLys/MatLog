@@ -4,8 +4,6 @@ package method.optimisation;
  * Created by Danil Lyskin at 09:14 01.04.2021
  */
 
-import org.springframework.data.util.Pair;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

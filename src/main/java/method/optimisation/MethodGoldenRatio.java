@@ -1,7 +1,5 @@
 package method.optimisation;
 
-import org.springframework.data.util.Pair;
-
 public class MethodGoldenRatio {
     private final static double EPSILON = 1E-9;
 
@@ -40,6 +38,6 @@ public class MethodGoldenRatio {
             iterations--;
         }
         // Step 4
-        return Pair.of(a, b);
+        return new Pair<>(a, b);
     }
 }
