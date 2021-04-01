@@ -1,7 +1,5 @@
 package method.optimisation;
 
-import org.springframework.data.util.Pair;
-
 public class MethodCombinationOfBrent {
     private final static double EPSILON = 1E-9;
 
