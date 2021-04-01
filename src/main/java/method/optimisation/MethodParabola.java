@@ -2,9 +2,9 @@ package method.optimisation;
 
 public class MethodParabola extends AbstractComparator {
 
-    public void main(String[] args) {
-        System.out.println(launchParabolaMethod(0.5, 2.5));
-    }
+    private static int n, k;
+
+
 
     private static class TripleF {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
@@ -24,7 +24,9 @@ public class MethodParabola extends AbstractComparator {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
-    public double launchParabolaMethod(double a, double b) {
+    public double launchParabolaMethod(double a, double b, int n) {
+        MethodParabola.n = n;
+        MethodParabola.k = 1;
         return parabolaMethod(new TripleX(a, chooseX2(a, b), b));
     }
 
@@ -35,17 +37,15 @@ public class MethodParabola extends AbstractComparator {
         double prevXmin = stepOne(tripleX);
         TripleX tripleX1 = stepThree(tripleX, prevXmin);
         double xMin = 0d, temp;
-        while (true) {
+        while (k < n) {
             temp = stepOne(tripleX1);
             if (temp == Double.MIN_VALUE) {
                 break;
             }
             xMin = temp;
-            if (stepTwo(prevXmin, xMin)) {
-                break;
-            }
             prevXmin = xMin;
             tripleX1 = stepThree(tripleX1, xMin);
+            k++;
         }
         return xMin;
     }
@@ -71,9 +71,9 @@ public class MethodParabola extends AbstractComparator {
         return 0.5 * (tripleX.x1 + tripleX.x2 - a1 / a2);
     }
 
-    private boolean stepTwo(double prevMin, double xMin) {
-        return Math.abs(prevMin - xMin) <= EPS;
-    }
+    //    private boolean stepTwo(double prevMin, double xMin) {
+//        return Math.abs(prevMin - xMin) <= EPS;
+//    }
 
     private TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
         double fXmin = functionResult(xMin);
