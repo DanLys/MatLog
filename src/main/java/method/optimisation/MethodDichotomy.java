@@ -1,12 +1,14 @@
 package method.optimisation;
 
+import org.springframework.data.util.Pair;
+
 /**
  * Created by Danil Lyskin at 15:12 25.02.2021
  */
 
 public class MethodDichotomy extends AbstractComparator {
 
-    private double func(double x) {
+    private static double func(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow(x - 2.3, 2);
     }
 
@@ -14,7 +16,7 @@ public class MethodDichotomy extends AbstractComparator {
      * calculate the result for 0.2𝑥𝑙𝑔(𝑥) + (𝑥 − 2.3)^2
      * @return 1 if result > 0, 0 if |result - 0| < eps, -1 if result < 0 {@link Integer}
      */
-    private Integer check(double x1, double x2) {
+    private static Integer check(double x1, double x2) {
         double res1 = func(x1);
         double res2 = func(x2);
 
@@ -28,12 +30,12 @@ public class MethodDichotomy extends AbstractComparator {
      * method dichotomy
      * @return x which is answer {@link Double}
      */
-    public double solve(double a, double b, int iterations) {
+    public static Pair<Double, Double> solve(double a, double b, int iterations) {
         double le = a;
         double ri = b;
         double del = 1e-7;
 
-        while ((ri - le) / 2 > EPS) {
+        while (iterations > 0) {
             double x1 = (le + ri - del) / 2;
             double x2 = (le + ri + del) / 2;
 
@@ -45,6 +47,6 @@ public class MethodDichotomy extends AbstractComparator {
             iterations--;
         }
 
-        return (le + ri) / 2;
+        return Pair.of(le, ri);
     }
 }

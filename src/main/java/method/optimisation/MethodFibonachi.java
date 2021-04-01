@@ -1,17 +1,20 @@
 package method.optimisation;
 
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MethodFibonachi extends AbstractComparator {
 
-    private double[] a, b, fibArr;
-    private double x1, x2, fX1, fX2;
-    private int k = 0, ind = 0;
-    private final int FIRST_FIB_ELEMENTS_AMOUNT = 150;
+    private static double[] a, b, fibArr;
+    private static double x1, x2, fX1, fX2;
+    private static int k = 0, ind = 0;
 
-    private double functionResult(double x) {
+    private static double functionResult(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
-    private void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
+    private static void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
         fibArr = new double[n];
         fibArr[0] = 1;
         fibArr[1] = 1;
@@ -24,19 +27,11 @@ public class MethodFibonachi extends AbstractComparator {
         }
     }
 
-    private int findIterationsAmount(double interval) {
-        for (int i = 1; i < FIRST_FIB_ELEMENTS_AMOUNT; i++) {
-            if (fibArr[i] > interval && fibArr[i - 1] < interval)
-                return i;
-        }
-        return -1;
-    }
-
-    private double fib(final int n) {        // get value fib
+    private static double fib(final int n) {        // get value fib
         return fibArr[n - 1];
     }
 
-    private int minusOnePower(int power) {
+    private static int minusOnePower(int power) {
         if (power % 2 == 0) {
             return 1;
         } else {
@@ -44,9 +39,8 @@ public class MethodFibonachi extends AbstractComparator {
         }
     }
 
-    public double fibonacchiOptimisation(double a1, double b1) {    // main func
-        fillFibArr(FIRST_FIB_ELEMENTS_AMOUNT);
-        int n = findIterationsAmount((b1-a1)/EPS);
+    public static Pair<Double, Double> fibonacchiOptimisation(double a1, double b1, int n) {    // main func
+        fillFibArr(n);
         a = new double[n + 1];  // fix ind
         b = new double[n + 1];
         a[0] = a1;
@@ -58,10 +52,10 @@ public class MethodFibonachi extends AbstractComparator {
         x2 = a1 + l2;
         fX2 = functionResult(x2);
         stepOne(n);
-        return (a[ind] + b[ind]) / 2;
+        return Pair.of(a[ind], b[ind]);
     }
 
-    private void stepOne(int n) { // step 4
+    private static void stepOne(int n) { // step 4
         x1 = a[ind] + (b[ind] - x2);
         double fX1 = functionResult(x1);
         if (isLess(fX1, fX2)) {
@@ -86,10 +80,13 @@ public class MethodFibonachi extends AbstractComparator {
         stepTwo(n);
     }
 
-    private void stepTwo(int n) {
+    private static void stepTwo(int n) {
         k++;
         if (k < n) {
             stepOne(n);
         } // else finish
     }
 }
+
+
+

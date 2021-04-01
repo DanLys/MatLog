@@ -1,14 +1,16 @@
 package method.optimisation;
 
+import org.springframework.data.util.Pair;
+
 public class MethodGoldenRatio {
     private final static double EPSILON = 1E-9;
 
-    private double f(double x) {
+    private static double f(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     // Return x : f(x) = min
-    private double goldenRatio(double a, double b) {
+    public static Pair<Double, Double> goldenRatio(double a, double b, int iterations) {
         // Step 1
         double x1 = a + (3 - Math.sqrt(5)) / 2 * (b - a);
         double x2 = a + (Math.sqrt(5) - 1) / 2 * (b - a);
@@ -18,7 +20,7 @@ public class MethodGoldenRatio {
         double eps = (b - a) / 2;
         int i = 0;
         // Step 2
-        while (eps >= EPSILON) {
+        while (iterations > 0) {
             // Step 3
             if (f1 - f2 <= EPSILON) {
                 b = x2;
@@ -35,8 +37,9 @@ public class MethodGoldenRatio {
             }
             eps *= t;
             i++;
+            iterations--;
         }
         // Step 4
-        return (a + b) / 2;
+        return Pair.of(a, b);
     }
 }
