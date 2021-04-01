@@ -64,7 +64,7 @@ class DrawFrame extends JFrame implements ActionListener {
         brentButton.setActionCommand("BRENT");
 
         slider.addChangeListener(e -> {
-            int value = ((JSlider)e.getSource()).getValue();
+            int value = ((JSlider)e.getSource()).getValue() + 1;
             switch (methodType) {
                 case FIB:
                     pair = MethodFibonachi.fibonacchiOptimisation(0.5, 2.5, value);

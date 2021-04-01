@@ -16,8 +16,8 @@ public class MethodFibonachi extends AbstractComparator {
 
     private static void fillFibArr(final int n) {         // числа фибоначчи предпроцессинг
         fibArr = new double[n];
-        fibArr[0] = 1;
-        fibArr[1] = 1;
+        fibArr[0] = 1d;
+        fibArr[1] = 1d;
         long x1 = 1, x2 = 1, res;
         for (int i = 2; i < n; i++) {
             res = x1 + x2;
@@ -40,7 +40,7 @@ public class MethodFibonachi extends AbstractComparator {
     }
 
     public static Pair<Double, Double> fibonacchiOptimisation(double a1, double b1, int n) {    // main func
-        fillFibArr(n);
+        fillFibArr(120);
         a = new double[n + 1];  // fix ind
         b = new double[n + 1];
         a[0] = a1;
