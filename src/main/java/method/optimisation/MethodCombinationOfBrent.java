@@ -1,5 +1,7 @@
 package method.optimisation;
 
+import org.springframework.data.util.Pair;
+
 public class MethodCombinationOfBrent {
     private final static double EPSILON = 1E-9;
 
@@ -31,7 +33,9 @@ public class MethodCombinationOfBrent {
                 u = (x + w - (fW - fX) / (w - x) / ((fV - fX) / (v - x) - (fW - fX) / (w - x)) / (v - w)) / 2;
                 if (u - a >= 0 && b - u >= 0 && Math.abs(u - x) - g / 2 < 0) {
                     parabolaU = true;
-                    ans = new Pair<>(x, new Pair<>(w, v));
+                    double m1 = Double.min(x, Double.min(w, v));
+                    double m2 = Double.max(x, Double.max(w, v));
+                    ans = new Pair<>(m1, new Pair<>((x + w + v) - (m1 + m2), m2));
                     if (u - a - 2 * tol < EPSILON || b - u - 2 * tol < EPSILON) {
                         u = x - Math.signum(x - (a + b) / 2) * tol;
                     }
@@ -48,7 +52,8 @@ public class MethodCombinationOfBrent {
                     u = x - t * (x - a);
                     e = x - a;
                 }
-                ans = new Pair<>(null, new Pair<>(u, e));
+                double m1 = Double.min(u, e);
+                ans = new Pair<>(null, new Pair<>(m1, (e + u) - m1));
             }
             if (Math.abs(u - x) - tol < EPSILON) {
                 u = x + Math.signum(u - x) * tol;
