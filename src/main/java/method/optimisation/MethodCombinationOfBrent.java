@@ -1,24 +1,26 @@
 package method.optimisation;
 
+import org.springframework.data.util.Pair;
+
 public class MethodCombinationOfBrent {
     private final static double EPSILON = 1E-9;
 
-    private double f(double x) {
+    private static double f(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
     // Return x : f(x) = min
-    private double combinationOfBrent(double a, double b) {
+    public static Pair<Double, Pair<Double, Double>> combinationOfBrent(double a, double b, int iterations) {
         // Step 1
         final double t = (3 - Math.sqrt(5)) / 2;
         double x = a + t * (b - a), w = x, v = x;
         double fX = f(x), fW = fX, fV = fX;
         double d = b - a, e = d;
         double u = 0, fU;
-        boolean parabolaU;
-        int i = 0;
+        boolean parabolaU = false;
+        Pair<Double, Pair<Double, Double>> ans = Pair.of(null, Pair.of(a, b));
         // Step 2
-        while (d > EPSILON) {
+        while (iterations > 0) {
             // Step 3
             parabolaU = false;
             double g = e;
@@ -31,6 +33,7 @@ public class MethodCombinationOfBrent {
                 u = (x + w - (fW - fX) / (w - x) / ((fV - fX) / (v - x) - (fW - fX) / (w - x)) / (v - w)) / 2;
                 if (u - a >= 0 && b - u >= 0 && Math.abs(u - x) - g / 2 < 0) {
                     parabolaU = true;
+                    ans = Pair.of(x, Pair.of(w, v));
                     if (u - a - 2 * tol < EPSILON || b - u - 2 * tol < EPSILON) {
                         u = x - Math.signum(x - (a + b) / 2) * tol;
                     }
@@ -38,7 +41,7 @@ public class MethodCombinationOfBrent {
                     parabolaU = false;
                 }
             }
-            // Step 4
+            // Step 4 // Golden ratio
             if (!parabolaU) {
                 if (x - (a + b) / 2 < EPSILON) {
                     u = x + t * (b - x);
@@ -47,6 +50,7 @@ public class MethodCombinationOfBrent {
                     u = x - t * (x - a);
                     e = x - a;
                 }
+                ans = Pair.of(null, Pair.of(u, e));
             }
             if (Math.abs(u - x) - tol < EPSILON) {
                 u = x + Math.signum(u - x) * tol;
@@ -82,9 +86,9 @@ public class MethodCombinationOfBrent {
                     fV = fU;
                 }
             }
-            i++;
+            iterations--;
         }
         // Step 6
-        return x;
+        return ans;
     }
 }
