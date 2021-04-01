@@ -10,7 +10,7 @@ public class MethodParabola extends AbstractComparator {
         public static double fX1, fX2, fX3;    // значения функции в точках x1, x2, x3
     }
 
-    private class TripleX {
+    private static class TripleX {
         public double x1, x2, x3;
 
         private TripleX(double x1, double x2, double x3) {
@@ -20,17 +20,17 @@ public class MethodParabola extends AbstractComparator {
         }
     }
 
-    private double functionResult(double x) {
+    private static double functionResult(double x) {
         return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
     }
 
-    public double launchParabolaMethod(double a, double b, int n) {
+    public static Pair<Double, Pair<Double, Double>> launchParabolaMethod(double a, double b, int n) {
         MethodParabola.n = n;
         MethodParabola.k = 1;
         return parabolaMethod(new TripleX(a, chooseX2(a, b), b));
     }
 
-    private double parabolaMethod(TripleX tripleX) {  // main parabola
+    private static Pair<Double, Pair<Double, Double>> parabolaMethod(TripleX tripleX) {  // main parabola
         TripleF.fX1 = functionResult(tripleX.x1);
         TripleF.fX2 = functionResult(tripleX.x2);
         TripleF.fX3 = functionResult(tripleX.x3);
@@ -47,10 +47,10 @@ public class MethodParabola extends AbstractComparator {
             tripleX1 = stepThree(tripleX1, xMin);
             k++;
         }
-        return xMin;
+        return new Pair<>(tripleX1.x1, new Pair<>(tripleX1.x2, tripleX1.x3));
     }
 
-    private double chooseX2(double a, double b) {  // методом золотого сечения
+    private static double chooseX2(double a, double b) {  // методом золотого сечения
         double x21 = a + (3 - Math.sqrt(5)) / 2 * (b - a),
                 x22 = a + (Math.sqrt(5) - 1) / 2 * (b - a),
                 fB = functionResult(b),
@@ -61,7 +61,7 @@ public class MethodParabola extends AbstractComparator {
         return chooseX2(x22, b);
     }
 
-    private double stepOne(TripleX tripleX) {
+    private static double stepOne(TripleX tripleX) {
         if (tripleX.x1 == tripleX.x2 || tripleX.x1 == tripleX.x3 || tripleX.x2 == tripleX.x3) {
             return Double.MIN_VALUE;
         }
@@ -75,7 +75,7 @@ public class MethodParabola extends AbstractComparator {
 //        return Math.abs(prevMin - xMin) <= EPS;
 //    }
 
-    private TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
+    private static TripleX stepThree(TripleX tripleX, double xMin) {  // define new x1, x2, x3
         double fXmin = functionResult(xMin);
         if (isLess(tripleX.x1, xMin)
                 && isLess(xMin, tripleX.x2)

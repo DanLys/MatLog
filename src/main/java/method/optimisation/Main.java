@@ -66,19 +66,28 @@ class DrawFrame extends JFrame implements ActionListener {
             switch (methodType) {
                 case FIB:
                     pair = MethodFibonachi.fibonacchiOptimisation(0.5, 2.5, value);
+                    panel.updateUI();
                     break;
                 case DICH:
                     pair = MethodDichotomy.solve(0.5, 2.5, value);
+                    panel.updateUI();
                     break;
                 case PARABOLA:
+                    triple = MethodParabola.launchParabolaMethod(0.5, 2.5, value);
+                    double EPS = 1e-7;
+                    if (!(Math.abs(triple.getFirst() - triple.getSecond().getFirst()) <= EPS ||
+                            Math.abs(triple.getSecond().getFirst() - triple.getSecond().getSecond()) <= EPS)) {
+                        panel.updateUI();
+                    }
                     break;
                 case GOLD:
                     pair = MethodGoldenRatio.goldenRatio(0.5, 2.5, value);
+                    panel.updateUI();
                     break;
                 case BRENT:
-                    triple = MethodCombinationOfBrent.combinationOfBrent(0,2.5, value);
+                    triple = MethodCombinationOfBrent.combinationOfBrent(0, 2.5, value);
+                    panel.updateUI();
             }
-            panel.updateUI();
         });
 
         panel.setLayout(null);
@@ -130,7 +139,7 @@ class DrawFrame extends JFrame implements ActionListener {
     public static Pair<Double, Double> pair = null;
     public static Pair<Double, Pair<Double, Double>> triple = null;
     public static Graphics2D g2 = null;
-    public static JSlider slider = new JSlider(0, 50, 0);
+    public static JSlider slider = new JSlider(0, 20, 0);
     public static JPanel panel = new DrawPanel();
 }
 
@@ -158,7 +167,7 @@ class DrawPanel extends JPanel {
             lastY = res;
         }
 
-        if (pair != null) {
+        if (pair != null || triple != null) {
             switch (methodType) {
                 case FIB:
                 case DICH:
@@ -196,16 +205,22 @@ class DrawPanel extends JPanel {
         for (double x = x2 - 1.5; x <= x2 + 1.5; x += 0.1) {
             double res = a * x * x + b * x + c;
 
+            if (Double.isNaN(res)) {
+                break;
+            }
+
             if (lastY == 0) {
                 lastY = res;
                 continue;
             }
+            g2.setColor(Color.blue);
             g2.draw(new Line2D.Double(
                     mX * (x - 0.1) + DEL,
                     DEFAULT_HEIGHT / 2 - mY * lastY,
                     mX * x + DEL,
                     DEFAULT_HEIGHT / 2 - mY * res));
             lastY = res;
+            g2.setColor(Color.BLACK);
         }
     }
 
