@@ -2,55 +2,41 @@ package lab1;
 
 import java.util.function.Function;
 
-public class MethodGoldenRatio extends Minimalizer {
+public class MethodGoldenRatio extends OneDimensionalSearch {
 
+    private static final double phi = (3 - Math.sqrt(5)) / 2;
 
-    public MethodGoldenRatio(Function<Double, Double> function, double leftBorder, double rightBorder) {
-        super(function, leftBorder, rightBorder);
+    public MethodGoldenRatio(Function<Double, Double> function, double leftBorder, double rightBorder, double EPS) {
+        super(function, leftBorder, rightBorder, EPS);
     }
 
     @Override
-    public double getMinimalValue(double epsilon) {
-        return goldenRatio(leftBorder, rightBorder, epsilon);
-    }
-
-
-    private static double f(double x) {
-        return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
-    }
-
-    // Return x : f(x) = min
-    public static Pair<Double, Double> goldenRatio(double a, double b, final double EPS) {
-        // Step 1
-        double x1 = a + (3 - Math.sqrt(5)) / 2 * (b - a);
-        double x2 = a + (Math.sqrt(5) - 1) / 2 * (b - a);
-        double f1 = f(x1);
-        double f2 = f(x2);
-        final double t = (Math.sqrt(5) - 1) / 2;
-        double eps = (b - a) / 2;
-        int i = 0;
-        // Step 2
-        while (eps > EPS) {
-            // Step 3
-            if (f1 - f2 <= EPS) {
-                b = x2;
-                x2 = x1;
-                f2 = f1;
-                x1 = b - t * (b - a);
-                f1 = f(x1);
+    public double getMinimalValue() {
+        int iter = 1;
+        double left = leftBorder;
+        double right = rightBorder;
+        while (!isEnd(left, right)) {
+            double leftMid = runForLeftBorder(left, right);
+            double rightMid = runForRightBorder(left, right);
+            if (function.apply(leftMid) <= function.apply(rightMid)) {
+                right = rightMid;
             } else {
-                a = x1;
-                x1 = x2;
-                f1 = f2;
-                x2 = a + t * (b - a);
-                f2 = f(x2);
+                left = leftMid;
             }
-            eps *= t;
-            i++;
+            iter++;
         }
-        // Step 4
-        return new Pair<>(a, b);
+        return (left + right) / 2;
     }
 
+    private boolean isEnd(double left, double right) {
+        return right - left <= 2 * EPS;
+    }
 
+    private double runForLeftBorder(double left, double right) {
+        return left + phi * (right - left);
+    }
+
+    private double runForRightBorder(double left, double right) {
+        return right - phi * (right - left);
+    }
 }

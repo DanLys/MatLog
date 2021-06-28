@@ -2,15 +2,105 @@ package lab1;
 
 import java.util.function.Function;
 
-public class MethodCombinationOfBrent extends Minimalizer {
+public class MethodCombinationOfBrent extends OneDimensionalSearch {
 
+    private final static double phi = (3 - Math.sqrt(5)) / 2;
 
-    public MethodCombinationOfBrent(Function<Double, Double> function, double leftBorder, double rightBorder) {
-        super(function, leftBorder, rightBorder);
+    public MethodCombinationOfBrent(Function<Double, Double> function, double leftBorder, double rightBorder, double EPS) {
+        super(function, leftBorder, rightBorder, EPS);
     }
 
-    private double f(double x) {
-        return 0.2 * x * Math.log10(x) + Math.pow((x - 2.3), 2);
+    @Override
+    public double getMinimalValue() {
+        int iter = 1;
+        //начальные значения
+        double a = leftBorder;      //левая граница
+        double c = rightBorder;     //правая граница
+        double x = runForLeftBorder(leftBorder, rightBorder); //условный минимум
+        double w = x;               //2-ой по минимальности
+        double v = x;               //предыдущее значение w
+        double fx = function.apply(x);//значение функции в х
+        double fw = fx;             //значение функции в w
+        double fv = fx;             //значение функции в v
+        //длины шагов
+        double d = (c - a);
+        double e = d;
+        double g;
+        //локальный eps
+        double tol;
+        double u = 0;
+        while (true) {
+            //lastLen = c - a;
+            g = e;
+            e = d;
+            boolean uIsGood = false;
+            tol = EPS * Math.abs(x) + EPS / 10.0;
+            //проверка на завершение
+            if (Math.abs(x - (a + c) / 2) + (c - a) / 2 <= 2 * tol) {
+                break;
+            }
+            //пытаемся использовать Метод Парабол
+            if (x != w && x != v && w != v && fx != fv && fx != fw && fv != fw) {
+                //find u (min of par on v,x,w)
+                u = findMinParabolaNoOrder(v, x, w, fv, fx, fw);
+                //проверяем, что u попадает в диапазон и достаточно хорошо сокращает отрезок
+                if (a <= u && u <= c && Math.abs(u - x) < g / 2) {
+                    //говорим что u нам подходит
+                    uIsGood = true;
+                    //если u оказался слишком близко к границе, то мы двигаем его в x
+                    if (u - a < 2 * tol || c - u < 2 * tol) {
+                        u = x - Math.signum(x - (a + c) / 2) * tol;
+                    }
+                }
+            }
+            //когда метод парабол не прошел, переходим на Золотое сечение
+            if (!uIsGood) {
+                if (x < (a + c) / 2) {
+                    u = runForLeftBorder(x, c);
+                    e = c - x;
+                } else {
+                    u = runForRightBorder(a, x);
+                    e = x - a;
+                }
+            }
+            //разводим u и x на tol(лок eps)
+            if (Math.abs(u - x) < tol) {
+                u = x + Math.signum(u - x) * tol;
+            }
+            d = Math.abs(u - x);
+            double fu = function.apply(u);
+            //переставляем границы
+            if (fu <= fx) {
+                if (u >= x) {
+                    a = x;
+                } else {
+                    c = x;
+                }
+                v = w;
+                w = x;
+                x = u;
+                fv = fw;
+                fw = fx;
+                fx = fu;
+            } else {
+                if (u >= x) {
+                    c = u;
+                } else {
+                    a = u;
+                }
+                if (fu <= fw || w == x) {
+                    v = w;
+                    w = u;
+                    fv = fw;
+                    fw = fu;
+                } else if (fu <= fv || v == x || v == w) {
+                    v = u;
+                    fv = fu;
+                }
+            }
+            iter++;
+        }
+        return x;
     }
 
     private double findMinParabolaNoOrder(double x1, double x2, double x3, double f1, double f2, double f3) {
@@ -41,95 +131,12 @@ public class MethodCombinationOfBrent extends Minimalizer {
         return (x1 + x2 - a1 / a2) / 2;
     }
 
-    // Return x : f(x) = min
-    public Pair<Double, Pair<Double, Double>> combinationOfBrent(final double EPS) {
-        // Step 1
-        final double t = (3 - Math.sqrt(5)) / 2;
-        double a = leftBorder;
-        double b = rightBorder;
-        double x = a + t * (b - a), w = x, v = x;
-        double fX = f(x), fW = fX, fV = fX;
-        double d = b - a, e = d;
-        double u = 0, fU;
-        boolean parabolaU;
-        Pair<Double, Pair<Double, Double>> ans = new Pair<>(null, new Pair<>(a, b));
-        // Step 2
-        while (!(Math.abs(x - (a + b) / 2) + (b - a) / 2 > 2 * EPS)) {      // check
-            // Step 3
-            parabolaU = false;
-            double g = e;
-            e = d;
-            double tol = EPS * Math.abs(x) + EPS / 10;
-//            if (Math.abs(x - (a + b) / 2) + (b - a) / 2 - 2 * tol <= EPSILON) {
-//                break;
-//            }
-            if (!(x == w || x == v || w == v || fX == fW || fX == fV || fV == fW)) {
-                u = findMinParabolaNoOrder(v, x, w, fV, fX, fW);
-                if (u - a >= EPS && b - u >= EPS && Math.abs(u - x) - g / 2 < EPS) {
-                    parabolaU = true;
-                    double m1 = Double.min(x, Double.min(w, v));
-                    double m2 = Double.max(x, Double.max(w, v));
-                    ans = new Pair<>(m1, new Pair<>((x + w + v) - (m1 + m2), m2));
-                    if (u - a - 2 * tol < EPS || b - u - 2 * tol < EPS) {
-                        u = x - Math.signum(x - (a + b) / 2) * tol;
-                    }
-                }
-            }
-            // Step 4
-            if (!parabolaU) {
-                if (x - (a + b) / 2 < EPS) {
-                    // [x, b]
-                    ans = new Pair<>(null, new Pair<>(x, b));
-                    u = x + t * (b - x);
-                    e = b - x;
-                } else {
-                    // [a, x]
-                    ans = new Pair<>(null, new Pair<>(a, x));
-                    u = x - t * (x - a);
-                    e = x - a;
-                }
-            }
-            if (Math.abs(u - x) - tol < EPS) {
-                u = x + Math.signum(u - x) * tol;
-            }
-            d = Math.abs(u - x);
-            fU = f(u);
-            // Step 5
-            if (fU - fX <= EPS) {
-                if (u - x >= EPS) {
-                    a = x;
-                } else {
-                    b = x;
-                }
-                v = w;
-                w = x;
-                x = u;
-                fV = fW;
-                fW = fX;
-                fX = fU;
-            } else {
-                if (u - x >= EPS) {
-                    b = u;
-                } else {
-                    a = u;
-                }
-                if (fU - fW <= EPS || w == x) {
-                    v = w;
-                    w = u;
-                    fV = fW;
-                    fW = fU;
-                } else if (fU - fV <= EPS || v == x || v == w) {
-                    v = u;
-                    fV = fU;
-                }
-            }
-        }
-        // Step 6
-        return ans;     // fix return double
+    private double runForLeftBorder(double left, double right) {
+        return left + phi * (right - left);
     }
 
-    @Override
-    public double getMinimalValue(double epsilon) {
-        return combinationOfBrent(epsilon);
+    private double runForRightBorder(double left, double right) {
+        return right - phi * (right - left);
     }
+
 }

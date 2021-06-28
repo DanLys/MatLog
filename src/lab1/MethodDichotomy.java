@@ -6,30 +6,25 @@ import java.util.function.Function;
  * Created by Danil Lyskin at 15:12 25.02.2021
  */
 
-public class MethodDichotomy extends Minimalizer {
+public class MethodDichotomy extends OneDimensionalSearch {
 
 
-    public MethodDichotomy(Function<Double, Double> function, double leftBorder, double rightBorder) {
-        super(function, leftBorder, rightBorder);
+    public MethodDichotomy(Function<Double, Double> function, double leftBorder, double rightBorder, double EPS) {
+        super(function, leftBorder, rightBorder, EPS);
     }
-
-    private static double func(double x) {
-        return 0.2 * x * Math.log10(x) + Math.pow(x - 2.3, 2);
-    }
-
 
     @Override
-    public double getMinimalValue(double epsilon) {
-        return solve(epsilon);
+    public double getMinimalValue() {
+        return solve();
     }
 
     /**
      * calculate the result for 0.2𝑥𝑙𝑔(𝑥) + (𝑥 − 2.3)^2
      * @return 1 if result > 0, 0 if |result - 0| < eps, -1 if result < 0 {@link Integer}
      */
-    private static Integer check(double x1, double x2) {
-        double res1 = func(x1);
-        double res2 = func(x2);
+    private int check(double x1, double x2) {
+        double res1 = function.apply(x1);
+        double res2 = function.apply(x2);
 
         if (res2 > res1) {
             return 1;
@@ -41,11 +36,11 @@ public class MethodDichotomy extends Minimalizer {
      * method dichotomy
      * @return x which is answer {@link Double}
      */
-    public  Pair<Double, Double> solve(final double EPS) {
+    public double solve() {
+        int iter = 1;
         double le = leftBorder;
         double ri = rightBorder;
-        double del = 1e-7;
-
+        double del = EPS * 1e-2;
         while (ri - le > EPS) {
             double x1 = (le + ri - del) / 2;
             double x2 = (le + ri + del) / 2;
@@ -55,9 +50,9 @@ public class MethodDichotomy extends Minimalizer {
             } else {
                 le = x1;
             }
+            iter++;
         }
-
-        return new lab1.Pair<Double, Double>(le, ri);
+        return (le + ri) / 2;
     }
 
 
